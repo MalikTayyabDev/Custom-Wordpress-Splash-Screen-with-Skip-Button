@@ -1,105 +1,275 @@
+add_action('wp_body_open', function () { ?>
+<style>
+/* =============================
+   SCROLL LOCK
+============================= */
+html.splash-lock,
+body.splash-lock {
+  overflow: hidden !important;
+  height: 100% !important;
+}
 
-<!-- SPLASH SCREEN VIDEO WITH SKIP BUTTON  -->
+/* =============================
+   SPLASH BASE
+============================= */
+#viper-splash {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  background: #000;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  color: #fff;
+}
 
-<html>
-  <div id="splash-screen">
-    <div class="splash-content">
-        <video id="splash-video" width="100%" height="100%" autoplay muted playsinline>
-            <source src="https://virtualexhibitz.ali.morosoftsites.com/wp-content/uploads/2024/09/1-MHC-website-home-iStock-1183982913.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <button id="skip-button">Skip</button>
+/* =============================
+   VIDEO
+============================= */
+#viper-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =============================
+   CONTENT
+============================= */
+.splash-inner {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 720px;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.splash-inner.show { opacity: 1; }
+
+/* =============================
+   LOGO ROW (FLEXBOX + CENTER)
+============================= */
+.viper-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 36px;
+}
+
+/* SAME SIZE FOR ALL: FAVICON + VIP + ER */
+.logo-size {
+  height: clamp(74px, 12vw, 150px);
+  width: auto;
+  display: block;
+}
+
+/* RESERVED SPACE FOR FAVICON (ALWAYS THERE) */
+.favicon-space {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================
+   ANIMATION STATES
+============================= */
+.favicon-inline,
+.vip-img,
+.er-img {
+  opacity: 0;
+}
+
+/* 1) Favicon fades in */
+.favicon-inline.show {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+/* 2) VIP fades in */
+.vip-img.show {
+  animation: fadeIn 0.9s ease forwards;
+}
+
+/* 3) ER slides out from VIP */
+.er-img {
+  transform: translateX(-14px); /* tucked under VIP */
+}
+.er-img.show {
+  animation: erSlideOut 0.7s ease forwards;
+}
+
+/* =============================
+   KEYFRAMES
+============================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes erSlideOut {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* =============================
+   TEXT (UNCHANGED)
+============================= */
+.splash-title,
+.splash-subtitle,
+.splash-cta {
+  opacity: 0;
+}
+
+.splash-title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  min-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.splash-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.6;
+  margin-bottom: 34px;
+  transition: opacity 0.6s ease;
+}
+
+.splash-cta {
+  padding: 14px 36px;
+  border: 1px solid rgba(255,255,255,0.9);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  transition: all 0.35s ease;
+}
+.splash-cta.show { opacity: 1; }
+
+.splash-cta:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* =============================
+   EXIT
+============================= */
+.fade-out {
+  animation: splashOut 0.8s ease forwards;
+}
+@keyframes splashOut {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* =============================
+   RESPONSIVE (LOGOS ONLY)
+============================= */
+@media (max-width: 768px) {
+  .logo-size {
+    height: clamp(64px, 18vw, 125px);
+  }
+}
+</style>
+
+<div id="viper-splash">
+  <video id="viper-video" muted autoplay playsinline preload="auto">
+    <source src="https://tayyab.mssoftsites.com/apalmer1701/wp-content/uploads/2026/01/Video-Project-2.mp4" type="video/mp4">
+  </video>
+
+  <div class="splash-inner" id="splashContent">
+    <div class="viper-logo" id="logoRow">
+
+      <!-- ✅ RESERVED SPACE FOR FAVICON -->
+      <div class="favicon-space" id="faviconSpace">
+        <img
+          src="https://tayyab.mssoftsites.com/apalmer1701/wp-content/uploads/2026/01/Logo-2_4x-100-2.png"
+          class="favicon-inline logo-size"
+          id="faviconInline"
+          alt="Favicon">
+      </div>
+
+      <img
+        src="https://tayyab.mssoftsites.com/apalmer1701/wp-content/uploads/2026/01/Logo-2_4x-100-1-2.png"
+        class="vip-img logo-size"
+        id="vipLogo"
+        alt="VIP">
+
+      <img
+        src="https://tayyab.mssoftsites.com/apalmer1701/wp-content/uploads/2026/01/Logo-2_4x-100-3.png"
+        class="er-img logo-size"
+        id="erLogo"
+        alt="ER">
     </div>
+
+    <div class="splash-title" id="heading"></div>
+
+    <div class="splash-subtitle" id="subtitle">
+      Your Personal AI Lifestyle & Travel Concierge.
+    </div>
+
+    <a class="splash-cta" id="applyBtn">Apply</a>
+  </div>
 </div>
 
-</html>
-<style>
-
- #splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.splash-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#splash-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border: none;
-}
-
-#skip-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background-color: #ff0000;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    z-index: 1000;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-#skip-button:hover {
-    opacity: 1;
-}
-
-</style>
 <script>
-  jQuery(document).ready(function($) {
-    // Function to close the splash screen
-    function closeSplashScreen() {
-        $("#splash-screen").fadeOut(500, function() {
-            $("#splash-video").get(0).pause();  // Stop the video
-            $("#splash-screen").remove();  // Remove the splash screen from the DOM
-        });
-    }
+document.addEventListener("DOMContentLoaded", () => {
 
-    // Click event for the skip button
-    $("#skip-button").on('click touchstart', function() {
-        closeSplashScreen();
-    });
+  const splash   = document.getElementById("viper-splash");
+  const content  = document.getElementById("splashContent");
 
-    // Automatically close the splash screen after the video ends
-    $("#splash-video").on("ended", function() {
-        closeSplashScreen();
-    });
+  const favicon  = document.getElementById("faviconInline");
+  const vip      = document.getElementById("vipLogo");
+  const er       = document.getElementById("erLogo");
 
-    // Fallback for the skip button to ensure it's enabled
-    $("#skip-button").prop('disabled', false);
+  const heading  = document.getElementById("heading");
+  const subtitle = document.getElementById("subtitle");
+  const button   = document.getElementById("applyBtn");
 
-    // Fallback in case the video doesn't auto-play in some browsers (e.g., strict incognito mode)
-    $("#splash-video").on('canplaythrough', function() {
-        this.play();
-    });
+  document.documentElement.classList.add("splash-lock");
+  document.body.classList.add("splash-lock");
+  content.classList.add("show");
 
-    // Double-check if the video has ended (useful for incognito and mobile browsers)
-    $("#splash-video").on('timeupdate', function() {
-        if (this.currentTime >= this.duration) {
-            closeSplashScreen();
-        }
-    });
+  /* 1️⃣ Favicon fade in */
+  setTimeout(() => favicon.classList.add("show"), 400);
+
+  /* 2️⃣ VIP fade in */
+  setTimeout(() => vip.classList.add("show"), 1200);
+
+  /* 3️⃣ ER slides out from VIP */
+  setTimeout(() => er.classList.add("show"), 1900);
+
+  /* 4️⃣ Heading typing (UNCHANGED) */
+  setTimeout(() => {
+    const text = "Access, Redefined.";
+    let i = 0;
+    heading.style.opacity = 1;
+    heading.textContent = "";
+    const typing = setInterval(() => {
+      heading.textContent += text.charAt(i++);
+      if (i >= text.length) clearInterval(typing);
+    }, 70);
+  }, 2600);
+
+  /* 5️⃣ Subtitle + CTA (UNCHANGED) */
+  setTimeout(() => subtitle.style.opacity = 0.75, 4000);
+  setTimeout(() => button.classList.add("show"), 4600);
+
+  /* 6️⃣ Apply closes splash */
+  button.addEventListener("click", () => {
+    splash.classList.add("fade-out");
+    setTimeout(() => {
+      splash.remove();
+      document.documentElement.classList.remove("splash-lock");
+      document.body.classList.remove("splash-lock");
+    }, 800);
+  });
+
 });
-
 </script>
+<?php });
